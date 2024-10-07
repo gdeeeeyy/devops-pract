@@ -1,0 +1,27 @@
+- hosts: webserver
+ become: true
+ tasks:
+ # Update package lists
+ - name: Update package lists
+ apt: update_cache=yes
+ # Install Nginx web server
+ - name: Install Nginx web server
+ apt: name=nginx state=present
+ # Start Nginx service
+ - name: Start Nginx service
+ service: name=nginx state=started enabled=yes
+ # Create directory for web content
+ - name: Create directory for web content
+ file: path=/var/www/html state=directory
+ # Copy the index.html file
+ - name: Copy index.html file
+ copy:
+ src: index.html
+ dest: /var/www/html/index.html
+ owner: www-data
+ group: www-data
+ handlers:
+ # Restart Nginx on config changes
+ - name: Restart Nginx on config changes
+ service: name=nginx state=restarted
+ when: changed

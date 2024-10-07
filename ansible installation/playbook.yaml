@@ -1,0 +1,8 @@
+- name: Install Apache Web Server # Play name
+ hosts: all # Target all hosts in the inventory
+ become: true # Use sudo privileges for tasks
+ tasks:
+ - name: Install Apache package
+ apt: # Use the apt module for Debian/Ubuntu
+ name: apache2
+ state: present
